@@ -1,6 +1,7 @@
 import React from "react";
 import FooterLogo from "../assets/logo-white.png";
-import menuItems from "./data";
+import { menuItems } from "./data";
+import { Link } from "react-router-dom";
 
 export default function Footer() {
   return (
@@ -13,10 +14,8 @@ export default function Footer() {
             {menuItems.map(item => {
               return (
                 <li key={item.id}>
-                  <a href={item.link}>
-                    {item.label}
-                  </a>
-                </li>
+                <Link to={item.link} className="link">{item.label}</Link>
+              </li>
               )
             })}
           </ul>
