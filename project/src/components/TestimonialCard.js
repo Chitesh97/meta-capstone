@@ -2,6 +2,7 @@ import React from "react";
 import starIcon from '../assets/star.svg';
 
 export default function TestimonialCard({ ...item }) {
+
   return (
     <div className="testimonial-card" key={item.id}>
       <div className="testimonial-header">
