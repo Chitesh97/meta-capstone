@@ -1,6 +1,6 @@
 import React from 'react';
 import Logo from '../assets/Logo.svg';
-import HamburgerIcon from '../assets/🦆 icon _hamburger menu.svg';
+import HamburgerIcon from '../assets/HamburgerIcon.svg';
 import { menuItems } from './data';
 import { Link } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';

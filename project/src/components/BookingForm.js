@@ -1,54 +1,72 @@
-import React, { useState } from "react";
-
+import React, { useReducer, useState } from "react";
+import { fetchAPI } from "./Api";
+import PopUp from "./Popup";
+import { useNavigate } from "react-router-dom";
 
 export default function BookingForm() {
-  const currentDate = new Date().toLocaleDateString();
   const minGuests = 1;
   const maxGuests = 10;
   const listOfOccasion = ['Birthday', 'Anniversary', 'Meeting', 'Other'];
-  const availableTimeSlots = ['17:00', '18:00', '19:00', '20:00', '21:00'];
 
-  const [resDate, setResDate] = useState(currentDate);
-  const [resTime, setResTime] = useState(availableTimeSlots[0]);
-  const [guestCount, setGuestCount] = useState(minGuests);
-  const [occasion, setOccasion] = useState(listOfOccasion[0]);
-  const [isPopUpVisible, setIsPopUpVisible] = useState(false);
-
-  function clearForm() {
-    setResDate(currentDate);
-    setResTime(availableTimeSlots[0]);
-    setGuestCount(minGuests);
-    setOccasion(listOfOccasion[0]);
+  const updateTimes = (availableTimes, date) => {
+    const response = fetchAPI(new Date(date));
+    return response.length !== 0 ? response : availableTimes;
   }
+
+  const initializeTimes = (initializeAvailableTimes) => [
+    ...initializeAvailableTimes,
+    ...fetchAPI(new Date()),
+  ];
+
+  const [availableTimes, dispatchOnDateChange] = useReducer(updateTimes, [], initializeTimes);
+
+  const [resDate, setResDate] = useState('');
+  const [resTime, setResTime] = useState(availableTimes[0]);
+  const [guestCount, setGuestCount] = useState('');
+  const [occasion, setOccasion] = useState('');
+  const [isFormSubmitted, setIsFormSubmitted] = useState(false);
+  const [isPopUpVisible, setIsPopUpVisible] = useState(false);
+  const navigate = useNavigate('');
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log({ currentDate, resDate, resTime, guestCount, occasion });
-    setIsPopUpVisible(true);
-    clearForm();
+    console.log({ resDate, resTime, guestCount, occasion });
+    setIsFormSubmitted(true);
+    if (resDate !== '' && resTime !== '' && guestCount !== '' && occasion !== '') {
+      setIsPopUpVisible(true);
+    }
+  }
+
+  function closePopUp() {
+    setIsFormSubmitted(false);
+    navigate('/');
   }
 
   return (
     <section className="reserve-table-background">
       <div className="container">
-        <h1 className="title">Reserve a table</h1>
+        <h1 className="title" data-test-id="booking-title">Reserve a table</h1>
         <form onSubmit={handleSubmit}>
           <div className="form-item">
             <label htmlFor="res-date">When are you visiting?</label>
             <input
               type="date"
               name="res-date"
-              min={currentDate}
               value={resDate}
-              onChange={(e) => setResDate(e.target.value)} />
+              className={isFormSubmitted && !resDate ? "error" : ""}
+              onChange={(e) => {
+                setResDate(e.target.value);
+                dispatchOnDateChange(e.target.value)
+              }} />
           </div>
           <div className="form-item">
             <label htmlFor="res-time">Select the time</label>
             <select
               name="res-time"
               value={resTime}
+              className={isFormSubmitted && !resTime ? "error" : ""}
               onChange={(e) => setResTime(e.target.value)}>
-              {availableTimeSlots.map(slot => (
+              {availableTimes.map(slot => (
                 <option key={slot} value={slot}>{slot}</option>
               ))}
             </select>
@@ -61,6 +79,7 @@ export default function BookingForm() {
               min={minGuests}
               max={maxGuests}
               value={guestCount}
+              className={isFormSubmitted && !guestCount ? "error" : ""}
               onChange={(e) => setGuestCount(e.target.value)} />
           </div>
           <div className="form-item">
@@ -68,7 +87,9 @@ export default function BookingForm() {
             <select
               name="occasion"
               value={occasion}
+              className={isFormSubmitted && !occasion ? "error" : ""}
               onChange={(e) => setOccasion(e.target.value)}>
+              <option value="Select">Select...</option>
               {listOfOccasion.map(occ => (
                 <option key={occ} value={occ}>{occ}</option>
               ))}
@@ -78,7 +99,13 @@ export default function BookingForm() {
         </form>
       </div>
 
-      {isPopUpVisible && <h2>Submitted!</h2>}
+      {isPopUpVisible &&
+        <PopUp
+          title="Reservation Completed!"
+          description="Thank you for choosing Little Lemon! Your reservation has been successfully made. You will receive a confirmation email with the details of your reservation. We are excited to see you soon!"
+          onClose={closePopUp}
+        />
+      }
     </section>
   )
 }
