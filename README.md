@@ -3,7 +3,7 @@ Welcome to Little Lemon, a cozy family-run Mediterranean restaurant nestled in t
 
 ## Preview
 ![image](https://github.com/user-attachments/assets/82e434c6-0a93-4acb-aacb-c86c26ffa2d7)
-[Live Preview](https://littlelemonchitesh.vercel.app/) 
+Live version of Little Lemon [Check out Live Preview](https://littlelemonchitesh.vercel.app/) 
 
 ## Steps
 1. npm install
