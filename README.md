@@ -2,7 +2,7 @@
 Welcome to Little Lemon, a cozy family-run Mediterranean restaurant nestled in the heart of Italy. We take pride in serving classic Italian dishes made with fresh, locally sourced ingredients. Blending tradition with a touch of modern flair, every meal is crafted with love and authenticity. Join us for a dining experience that’s warm, flavorful, and truly unforgettable.
 
 ## Preview
-![image](https://github.com/user-attachments/assets/7409c19e-5437-4a01-bca8-ab13c049ee7c)
+![image](https://github.com/user-attachments/assets/ecfdfe77-aa64-463a-82f6-6418023584ea)
 
 ## Steps
 1. npm install
