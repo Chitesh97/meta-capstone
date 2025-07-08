@@ -19,7 +19,6 @@ export default function BookingForm() {
   ];
 
   const [availableTimes, dispatchOnDateChange] = useReducer(updateTimes, [], initializeTimes);
-
   const [resDate, setResDate] = useState('');
   const [resTime, setResTime] = useState(availableTimes[0]);
   const [guestCount, setGuestCount] = useState('');
