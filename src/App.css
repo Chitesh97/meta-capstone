@@ -494,5 +494,6 @@ ul.footer-social-links a {
 
   .under-construction h1 {
     font-size: 3rem;
+    word-break: break-word;
   }
 }
